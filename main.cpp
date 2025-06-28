@@ -19,39 +19,67 @@ int main() {
         Transportadora hermes("Hermes");
         hermes.agregarPlaza(&plaza1);
 
-        // Billetes
         ElementoMonetario billete5(5, Tipo::Billete);
         ElementoMonetario billete10(10, Tipo::Billete);
         ElementoMonetario billete100(100, Tipo::Billete);
         ElementoMonetario billete200(200, Tipo::Billete);
-        // Monedas
+
         ElementoMonetario moneda1(1, Tipo::Moneda);
         ElementoMonetario moneda2(2, Tipo::Moneda);
         ElementoMonetario moneda5(5, Tipo::Moneda);
 
-        // Depositar billetes y monedas
-        std::cout << "Depositando billetes y monedas en la bóveda..." << std::endl;
-        depositar(&banco1, &boveda1, &billete5, 10, &hermes);
-        depositar(&banco1, &boveda1, &billete10, 5, &hermes);
-        depositar(&banco1, &boveda1, &billete100, 2, &hermes);
-        depositar(&banco1, &boveda1, &billete200, 1, &hermes);
-        depositar(&banco1, &boveda1, &moneda1, 20, &hermes);
-        depositar(&banco1, &boveda1, &moneda2, 10, &hermes);
-        depositar(&banco1, &boveda1, &moneda5, 4, &hermes);
-
+        try {
+            std::cout << "Depositando billetes y monedas en la bóveda..." << std::endl;
+            depositar(&banco1, &boveda1, &billete5, 10, &hermes);
+            depositar(&banco1, &boveda1, &billete10, 5, &hermes);
+            depositar(&banco1, &boveda1, &billete100, 2, &hermes);
+            depositar(&banco1, &boveda1, &billete200, 1, &hermes);
+            depositar(&banco1, &boveda1, &moneda1, 20, &hermes);
+            depositar(&banco1, &boveda1, &moneda2, 10, &hermes);
+            depositar(&banco1, &boveda1, &moneda5, 4, &hermes);
+            std::cout << "Deposito exitoso." << std::endl;
+        } catch(const ExcepcionBovedas& ex) {
+            std::cerr << "Error en deposito: " << ex.what() << std::endl;
+        }
         std::cout << "\nEstado de la bóveda después de depositar:" << std::endl;
         boveda1.imprimir();
 
-        // Retirar billetes y monedas
-        std::cout << "\nRetirando 2 billetes de 100 y 5 monedas de 2..." << std::endl;
-        retirar(&banco1, &boveda1, &billete100, 2, &hermes);
-        retirar(&banco1, &boveda1, &moneda2, 5, &hermes);
-
+        try {
+            std::cout << "\nRetirando 2 billetes de 100 y 5 monedas de 2..." << std::endl;
+            retirar(&banco1, &boveda1, &billete100, 2, &hermes);
+            retirar(&banco1, &boveda1, &moneda2, 5, &hermes);
+            std::cout << "Retiro exitoso." << std::endl;
+        } catch(const ExcepcionBovedas& ex) {
+            std::cerr << "Error en retiro: " << ex.what() << std::endl;
+        }
         std::cout << "\nEstado de la bóveda después de retirar:" << std::endl;
         boveda1.imprimir();
 
-        std::cout << "\nOperaciones registradas en la bóveda:" << std::endl;
+        Plaza plaza2("Alajuela");
+        EntidadBancaria banco2("Banco Nacional");
+        Boveda boveda2("Boveda Secundaria", &plaza2);
+        banco2.agregarBoveda(&boveda2);
+        banco2.agregarPlaza(&plaza2);
+        hermes.agregarPlaza(&plaza2);
+        try {
+            std::cout << "\nTransfiriendo 5 billetes de 5 y 10 monedas de 1 de la bóveda principal a la secundaria..." << std::endl;
+            transferir(&banco1, &plaza1, &boveda1, &banco2, &plaza2, &boveda2, &billete5, 5, &hermes);
+            transferir(&banco1, &plaza1, &boveda1, &banco2, &plaza2, &boveda2, &moneda1, 10, &hermes);
+            std::cout << "Transferencia exitosa." << std::endl;
+        } catch(const ExcepcionBovedas& ex) {
+            std::cerr << "Error en transferencia: " << ex.what() << std::endl;
+        }
+        std::cout << "\nEstado de la bóveda principal después de transferir:" << std::endl;
+        boveda1.imprimir();
+        std::cout << "\nEstado de la bóveda secundaria después de recibir transferencia:" << std::endl;
+        boveda2.imprimir();
+
+        std::cout << "\nOperaciones registradas en la bóveda principal:" << std::endl;
         for (const auto& op : boveda1.getOperaciones()) {
+            if (op) op->imprimir();
+        }
+        std::cout << "\nOperaciones registradas en la bóveda secundaria:" << std::endl;
+        for (const auto& op : boveda2.getOperaciones()) {
             if (op) op->imprimir();
         }
     } catch(const ExcepcionBovedas& ex) {

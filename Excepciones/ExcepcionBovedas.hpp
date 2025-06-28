@@ -28,3 +28,32 @@ class ExcepcionElementoMonetarioInvalido : public ExcepcionBovedas {
 public:
     ExcepcionElementoMonetarioInvalido(const std::string& msg) : ExcepcionBovedas(msg) {}
 };
+
+class DineroDaniadoException : public ExcepcionBovedas {
+public:
+    DineroDaniadoException(const std::string& msg) : ExcepcionBovedas(msg) {}
+};
+class DineroFalsoException : public ExcepcionBovedas {
+public:
+    DineroFalsoException(const std::string& msg) : ExcepcionBovedas(msg) {}
+};
+class IntegridadManifiestoException : public ExcepcionBovedas {
+public:
+    IntegridadManifiestoException(const std::string& msg) : ExcepcionBovedas(msg) {}
+};
+class OperacionRevertidaException : public ExcepcionBovedas {
+public:
+    OperacionRevertidaException(const std::string& msg) : ExcepcionBovedas(msg) {}
+};
+class BovedaPlazaMismatchException : public ExcepcionBovedas {
+public:
+    BovedaPlazaMismatchException(const std::string& msg) : ExcepcionBovedas(msg) {}
+};
+class CapacidadInsuficienteException : public ExcepcionBovedas {
+public:
+    CapacidadInsuficienteException(const std::string& msg) : ExcepcionBovedas(msg) {}
+};
+class TransporteDemoradoException : public ExcepcionBovedas {
+public:
+    TransporteDemoradoException(const std::string& msg) : ExcepcionBovedas(msg) {}
+};
