@@ -82,6 +82,62 @@ int main() {
         for (const auto& op : boveda2.getOperaciones()) {
             if (op) op->imprimir();
         }
+
+        // Lanzar excepción por entidad nula
+        try {
+            std::cout << "\nIntentando depositar con entidad nula..." << std::endl;
+            depositar(nullptr, &boveda1, &billete5, 1, &hermes);
+        } catch(const ExcepcionBovedas& ex) {
+            std::cerr << "Excepción esperada (entidad nula): " << ex.what() << std::endl;
+        }
+        // Lanzar excepción por monto inválido
+        try {
+            std::cout << "\nIntentando depositar monto inválido..." << std::endl;
+            depositar(&banco1, &boveda1, &billete5, 0, &hermes);
+        } catch(const ExcepcionBovedas& ex) {
+            std::cerr << "Excepción esperada (monto inválido): " << ex.what() << std::endl;
+        }
+        // Lanzar excepción por bóveda no perteneciente al banco
+        Plaza plazaFake("Fake");
+        Boveda bovedaFake("Boveda Fake", &plazaFake);
+        try {
+            std::cout << "\nIntentando depositar en bóveda que no pertenece al banco..." << std::endl;
+            depositar(&banco1, &bovedaFake, &billete5, 1, &hermes);
+        } catch(const ExcepcionBovedas& ex) {
+            std::cerr << "Excepción esperada (bóveda no pertenece al banco): " << ex.what() << std::endl;
+        }
+        // Lanzar excepción por transportadora no operativa
+        Transportadora transNoOp("NoOp");
+        try {
+            std::cout << "\nIntentando depositar con transportadora no operativa..." << std::endl;
+            depositar(&banco1, &boveda1, &billete5, 1, &transNoOp);
+        } catch(const ExcepcionBovedas& ex) {
+            std::cerr << "Excepción esperada (transportadora no operativa): " << ex.what() << std::endl;
+        }
+        // Lanzar excepción por saldo insuficiente
+        try {
+            std::cout << "\nIntentando retirar más de lo disponible..." << std::endl;
+            retirar(&banco1, &boveda1, &billete200, 100, &hermes);
+        } catch(const ExcepcionBovedas& ex) {
+            std::cerr << "Excepción esperada (saldo insuficiente): " << ex.what() << std::endl;
+        }
+        // Lanzar excepción por transferencia con boveda-plaza mismatch
+        Plaza plaza3("Cartago");
+        Boveda boveda3("Boveda Cartago", &plaza3);
+        banco2.agregarBoveda(&boveda3);
+        try {
+            std::cout << "\nIntentando transferir con boveda-plaza mismatch..." << std::endl;
+            transferir(&banco1, &plaza1, &boveda1, &banco2, &plaza3, &boveda3, &billete5, 1, &hermes);
+        } catch(const ExcepcionBovedas& ex) {
+            std::cerr << "Excepción esperada (boveda-plaza mismatch): " << ex.what() << std::endl;
+        }
+        // Lanzar excepción por capacidad insuficiente
+        try {
+            std::cout << "\nIntentando transferir con capacidad insuficiente..." << std::endl;
+            transferir(&banco1, &plaza1, &boveda1, &banco2, &plaza2, &boveda2, &moneda1, 101, &hermes);
+        } catch(const ExcepcionBovedas& ex) {
+            std::cerr << "Excepción esperada (capacidad insuficiente): " << ex.what() << std::endl;
+        }
     } catch(const ExcepcionBovedas& ex) {
         std::cerr << "Excepcion: " << ex.what() << std::endl;
     }
