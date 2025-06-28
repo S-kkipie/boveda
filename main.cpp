@@ -6,13 +6,11 @@
 #include "Entidades/Interfaces/PaqueteMonetario.hpp"
 #include "Entidades/Interfaces/ElementoMonetario.hpp"
 #include "Excepciones/ExcepcionBovedas.hpp"
-#include "Excepciones/ExcepcionesEspeciales.hpp"
 #include <iostream>
 #include <ctime>
-
+#include "Funcionalidad/operaciones.cpp"
 int main() {
     try {
-        // Crear entidades
         Plaza plaza1("San Jose");
         EntidadBancaria banco1("Banco Central");
         Boveda boveda1("Boveda Principal", &plaza1);
@@ -21,44 +19,41 @@ int main() {
         Transportadora hermes("Hermes");
         hermes.agregarPlaza(&plaza1);
 
-        // Crear elemento monetario y paquete
-        ElementoMonetario billete10000(10000, Estado::Bueno, Tipo::Billete);
-        PaqueteMonetario paquete(&billete10000, 5);
+        // Billetes
+        ElementoMonetario billete5(5, Tipo::Billete);
+        ElementoMonetario billete10(10, Tipo::Billete);
+        ElementoMonetario billete100(100, Tipo::Billete);
+        ElementoMonetario billete200(200, Tipo::Billete);
+        // Monedas
+        ElementoMonetario moneda1(1, Tipo::Moneda);
+        ElementoMonetario moneda2(2, Tipo::Moneda);
+        ElementoMonetario moneda5(5, Tipo::Moneda);
 
-        // Crear operación
-        std::time_t ahora = std::time(nullptr);
-        Operacion op(ahora, TipoOperacion::Deposito, &hermes, &plaza1, nullptr, &banco1, nullptr);
-        op.agregarPaqueteMonetario(&paquete);
+        // Depositar billetes y monedas
+        std::cout << "Depositando billetes y monedas en la bóveda..." << std::endl;
+        depositar(&banco1, &boveda1, &billete5, 10, &hermes);
+        depositar(&banco1, &boveda1, &billete10, 5, &hermes);
+        depositar(&banco1, &boveda1, &billete100, 2, &hermes);
+        depositar(&banco1, &boveda1, &billete200, 1, &hermes);
+        depositar(&banco1, &boveda1, &moneda1, 20, &hermes);
+        depositar(&banco1, &boveda1, &moneda2, 10, &hermes);
+        depositar(&banco1, &boveda1, &moneda5, 4, &hermes);
 
-        std::cout << "\n[DEBUG] Estado inicial de las entidades:" << std::endl;
-        plaza1.imprimir();
-        banco1.imprimir();
+        std::cout << "\nEstado de la bóveda después de depositar:" << std::endl;
         boveda1.imprimir();
-        hermes.imprimir();
-        billete10000.imprimir();
-        paquete.imprimir();
 
-        std::cout << "\n[DEBUG] Estado de la operación creada:" << std::endl;
-        op.imprimir();
+        // Retirar billetes y monedas
+        std::cout << "\nRetirando 2 billetes de 100 y 5 monedas de 2..." << std::endl;
+        retirar(&banco1, &boveda1, &billete100, 2, &hermes);
+        retirar(&banco1, &boveda1, &moneda2, 5, &hermes);
 
-        // Registrar operación
-        std::cout << "\n[DEBUG] Registrando operación en entidades..." << std::endl;
-        banco1.registrarOperacion(&op);
-        hermes.registrarOperacion(&op);
-        plaza1.registrarOperacion(&op);
-        boveda1.registrarOperacion(&op);
-
-        std::cout << "\n[DEBUG] Estado final de las entidades:" << std::endl;
-        plaza1.imprimir();
-        banco1.imprimir();
+        std::cout << "\nEstado de la bóveda después de retirar:" << std::endl;
         boveda1.imprimir();
-        hermes.imprimir();
 
-        // Consultar operaciones
-        std::cout << "Operaciones en banco: " << banco1.getOperaciones().size() << std::endl;
-        std::cout << "Operaciones en transportadora: " << hermes.getOperaciones().size() << std::endl;
-        std::cout << "Operaciones en plaza: " << plaza1.getOperaciones().size() << std::endl;
-        std::cout << "Operaciones en boveda: " << boveda1.getOperaciones().size() << std::endl;
+        std::cout << "\nOperaciones registradas en la bóveda:" << std::endl;
+        for (const auto& op : boveda1.getOperaciones()) {
+            if (op) op->imprimir();
+        }
     } catch(const ExcepcionBovedas& ex) {
         std::cerr << "Excepcion: " << ex.what() << std::endl;
     }

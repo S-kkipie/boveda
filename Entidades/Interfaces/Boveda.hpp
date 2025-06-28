@@ -18,6 +18,7 @@ public:
     std::string getNombre() const;
     void setNombre(const std::string& nombre);
     Plaza* getPlaza() const;
+    std::vector<PaqueteMonetario*> getPaquetesMonetarios() const;
     void setPlaza(Plaza* plaza);
     void registrarOperacion(Operacion* op);
     const std::vector<Operacion*>& getOperaciones() const;

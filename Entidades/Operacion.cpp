@@ -6,6 +6,8 @@
 
 
 #include "Interfaces/Plaza.hpp"
+#include <algorithm>
+#include <random>
 
 Operacion::Operacion(std::time_t fecha, TipoOperacion tipoOperacion,
                      Transportadora* transportadora, Plaza* plazaOrigen, Plaza* plazaDestino,
@@ -67,3 +69,4 @@ void Operacion::imprimir() const {
     }
     std::cout << "-------------------------------" << std::endl;
 }
+

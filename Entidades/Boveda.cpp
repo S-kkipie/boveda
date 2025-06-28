@@ -18,6 +18,10 @@ Plaza* Boveda::getPlaza() const {
     return plaza;
 }
 
+std::vector<PaqueteMonetario*> Boveda::getPaquetesMonetarios() const {
+    return paquetesMonetarios;
+}
+
 void Boveda::setPlaza(Plaza* plaza) {
     this->plaza = plaza;
 }
