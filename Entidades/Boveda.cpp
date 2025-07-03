@@ -18,7 +18,7 @@ Plaza* Boveda::getPlaza() const {
     return plaza;
 }
 
-std::vector<PaqueteMonetario*> Boveda::getPaquetesMonetarios() const {
+std::vector<PaqueteMonetario*>& Boveda::getPaquetesMonetarios() {
     return paquetesMonetarios;
 }
 
@@ -34,7 +34,7 @@ const std::vector<Operacion*>& Boveda::getOperaciones() const {
     return operaciones;
 }
 
-void Boveda::imprimir() const {
+void Boveda::imprimirDetalles() const {
     std::cout << "--- Detalles de la Bóveda ---" << std::endl;
     std::cout << "Nombre: " << nombre << std::endl;
     std::cout << "Plaza: " << (plaza ? plaza->getNombre() : "(null)") << std::endl;
@@ -44,11 +44,17 @@ void Boveda::imprimir() const {
         if (paquetesMonetarios[i]) paquetesMonetarios[i]->imprimir();
         else std::cout << "(null)" << std::endl;
     }
+
+    std::cout << "-----------------------------" << std::endl;
+}
+
+void Boveda::imprimirOperaciones() const {
+    std::cout << "--- Detalles de las Operaciones de la Bóveda ---" << std::endl;
     std::cout << "Cantidad de operaciones: " << operaciones.size() << std::endl;
     for (size_t i = 0; i < operaciones.size(); ++i) {
-        std::cout << "  Operacion " << i+1 << ": ";
+        std::cout << "  Operación " << i+1 << ": ";
         if (operaciones[i]) operaciones[i]->imprimir();
         else std::cout << "(null)" << std::endl;
     }
-    std::cout << "-----------------------------" << std::endl;
+    std::cout << "-----------------------------------------------" << std::endl;
 }

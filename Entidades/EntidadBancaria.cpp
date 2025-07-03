@@ -41,7 +41,7 @@ void EntidadBancaria::imprimir() const {
     std::cout << "Cantidad de bóvedas: " << bovedas.size() << std::endl;
     for (size_t i = 0; i < bovedas.size(); ++i) {
         std::cout << "  Bóveda " << i+1 << ": ";
-        if (bovedas[i]) bovedas[i]->imprimir();
+        if (bovedas[i]) bovedas[i]->imprimirDetalles();
         else std::cout << "(null)" << std::endl;
     }
     std::cout << "Cantidad de plazas: " << plazas.size() << std::endl;

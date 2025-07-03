@@ -42,7 +42,7 @@ int main() {
             std::cerr << "Error en deposito: " << ex.what() << std::endl;
         }
         std::cout << "\nEstado de la bóveda después de depositar:" << std::endl;
-        boveda1.imprimir();
+        boveda1.imprimirDetalles();
 
         try {
             std::cout << "\nRetirando 2 billetes de 100 y 5 monedas de 2..." << std::endl;
@@ -53,7 +53,7 @@ int main() {
             std::cerr << "Error en retiro: " << ex.what() << std::endl;
         }
         std::cout << "\nEstado de la bóveda después de retirar:" << std::endl;
-        boveda1.imprimir();
+        boveda1.imprimirDetalles();
 
         Plaza plaza2("Alajuela");
         EntidadBancaria banco2("Banco Nacional");
@@ -70,18 +70,14 @@ int main() {
             std::cerr << "Error en transferencia: " << ex.what() << std::endl;
         }
         std::cout << "\nEstado de la bóveda principal después de transferir:" << std::endl;
-        boveda1.imprimir();
+        boveda1.imprimirDetalles();
         std::cout << "\nEstado de la bóveda secundaria después de recibir transferencia:" << std::endl;
-        boveda2.imprimir();
+        boveda2.imprimirDetalles();
 
         std::cout << "\nOperaciones registradas en la bóveda principal:" << std::endl;
-        for (const auto& op : boveda1.getOperaciones()) {
-            if (op) op->imprimir();
-        }
+        boveda1.imprimirOperaciones();
         std::cout << "\nOperaciones registradas en la bóveda secundaria:" << std::endl;
-        for (const auto& op : boveda2.getOperaciones()) {
-            if (op) op->imprimir();
-        }
+        boveda2.imprimirOperaciones();
 
         // Lanzar excepción por entidad nula
         try {

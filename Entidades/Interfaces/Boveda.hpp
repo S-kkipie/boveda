@@ -18,9 +18,10 @@ public:
     std::string getNombre() const;
     void setNombre(const std::string& nombre);
     Plaza* getPlaza() const;
-    std::vector<PaqueteMonetario*> getPaquetesMonetarios() const;
+    std::vector<PaqueteMonetario*>& getPaquetesMonetarios();
     void setPlaza(Plaza* plaza);
     void registrarOperacion(Operacion* op);
     const std::vector<Operacion*>& getOperaciones() const;
-    void imprimir() const;
+    void imprimirDetalles() const;
+    void imprimirOperaciones() const;
 };
