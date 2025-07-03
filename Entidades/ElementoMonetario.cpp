@@ -1,6 +1,18 @@
 #include "Interfaces/ElementoMonetario.hpp"
 #include <iostream>
 
+
+std::string to_string(Tipo tipo) {
+    switch (tipo) {
+        case Tipo::Billete: return "Billete";
+        case Tipo::Moneda:  return "Moneda";
+        case Tipo::Joya:    return "Joya";
+        case Tipo::Bono:    return "Bono";
+        case Tipo::Otro:    return "Otro";
+        default:            return "Desconocido";
+    }
+}
+
 ElementoMonetario::ElementoMonetario(double valor, Tipo tipo)
     : valor(valor), tipo(tipo) {}
 
@@ -22,6 +34,6 @@ void ElementoMonetario::setTipo(Tipo tipo) {
 }
 
 void ElementoMonetario::imprimir() const {
-    std::cout << "[ElementoMonetario] Valor: " << valor
-              << ", Tipo: " << static_cast<int>(tipo) << std::endl;
+    std::cout << " Valor: " << valor
+              << ", Tipo: " << to_string(tipo) << std::endl;
 }

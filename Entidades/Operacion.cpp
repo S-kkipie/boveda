@@ -9,6 +9,17 @@
 #include <algorithm>
 #include <random>
 
+inline std::string to_string(TipoOperacion op) {
+    switch (op) {
+        case TipoOperacion::Deposito:      return "Depósito";
+        case TipoOperacion::Retiro:        return "Retiro";
+        case TipoOperacion::Transferencia: return "Transferencia";
+        case TipoOperacion::Canje:         return "Canje";
+        case TipoOperacion::Otro:          return "Otro";
+        default:                           return "Desconocido";
+    }
+}
+
 Operacion::Operacion(std::time_t fecha, TipoOperacion tipoOperacion,
                      Transportadora* transportadora, Plaza* plazaOrigen, Plaza* plazaDestino,
                      EntidadBancaria* entidadOrigen, EntidadBancaria* entidadDestino)
@@ -53,9 +64,10 @@ EntidadBancaria* Operacion::getEntidadDestino() const {
 }
 
 void Operacion::imprimir() const {
+    std::tm* tm_local = std::localtime(&fecha);
     std::cout << "--- Detalles de la Operacion ---" << std::endl;
-    std::cout << "Fecha (timestamp): " << fecha << std::endl;
-    std::cout << "Tipo de operacion: " << static_cast<int>(tipoOperacion) << std::endl;
+    std::cout << "Fecha: " << std::put_time(tm_local, "%Y-%m-%d %H:%M:%S") << std::endl;
+    std::cout << "Tipo de operacion: " << to_string(tipoOperacion) << std::endl;
     std::cout << "Transportadora: " << (transportadora ? transportadora->getNombre() : "(null)") << std::endl;
     std::cout << "Plaza Origen: " << (plazaOrigen ? plazaOrigen->getNombre() : "(null)") << std::endl;
     std::cout << "Plaza Destino: " << (plazaDestino ? plazaDestino->getNombre() : "(null)") << std::endl;

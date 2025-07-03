@@ -1,6 +1,16 @@
 #include "Interfaces/PaqueteMonetario.hpp"
 #include <iostream>
 
+std::string to_string(Estado estado) {
+    switch (estado) {
+        case Estado::Bueno:   return "Bueno";
+        case Estado::Dañado:  return "Dañado";
+        case Estado::Falso:   return "Falso";
+        default:              return "Desconocido";
+    }
+}
+
+
 PaqueteMonetario::PaqueteMonetario(ElementoMonetario* elemento, Estado estado, int cantidad)
     : elemento(elemento), estado(estado), cantidad(cantidad) {}
 
@@ -26,7 +36,7 @@ void PaqueteMonetario::setEstado(Estado estado) {
 
 void PaqueteMonetario::imprimir() const {
 
-    std::cout << "Cantidad: " << cantidad << ", Estado: " << static_cast<int>(estado) << ", Elemento: ";
+    std::cout << "Cantidad: " << cantidad << ", Estado: " << to_string(estado) << ", Elemento: ";
     if (elemento) elemento->imprimir();
     else std::cout << "(null)" << std::endl;
 }
